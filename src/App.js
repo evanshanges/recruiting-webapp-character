@@ -62,42 +62,51 @@ function App() {
     });
   }
 
+  let debounceTimer;
   const saveAllCharacters = () => {
-    fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(characterList)
-    })
-    .then(() => {
-      if(characterList.length == 0){
-        alert('All Characters were saved successfully!');
-      }
-      alert('All Characters were reset successfully!');
-    })
-    .catch(() => {
-      alert('There was an error when saving characters :(');
-    });
+    clearTimeout(debounceTimer);
+
+    debounceTimer = setTimeout(() => {
+      fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(characterList)
+      })
+      .then(() => {
+        if(characterList.length == 0){
+          alert('All Characters were saved successfully!');
+        }
+        alert('All Characters were reset successfully!');
+      })
+      .catch(() => {
+        alert('There was an error when saving characters :(');
+      });
+    }, 500);
   }
 
   const resetAllCharacters = () => {
-    fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify([])
-    })
-    .then(() => {
-      updateCharacterList(draft => 
-        draft = []
-      );
-      alert('All Characters were reset successfully!');
-    })
-    .catch(() => {
-      alert('There was an error when resetting characters :(');
-    });
+    clearTimeout(debounceTimer);
+
+    debounceTimer = setTimeout(() => {
+      fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify([])
+      })
+      .then(() => {
+        updateCharacterList(draft => 
+          draft = []
+        );
+        alert('All Characters were reset successfully!');
+      })
+      .catch(() => {
+        alert('There was an error when resetting characters :(');
+      });
+    }, 500)
   }
   
   return (
@@ -110,12 +119,17 @@ function App() {
         <button onClick={addNewCharacter}>
           Add New Character
         </button>
-        <button onClick={saveAllCharacters} style={{ marginLeft: 20, marginRight: 20 }}>
-          Save All Characters
-        </button>
-        <button onClick={resetAllCharacters}>
-          Reset All Characters
-        </button>
+        
+        {characterList.length > 0 && (
+          <>
+            <button onClick={saveAllCharacters} style={{ marginLeft: 20, marginRight: 20 }}>
+              Save All Characters
+            </button>
+            <button onClick={resetAllCharacters}>
+              Reset All Characters
+            </button>
+          </>
+        )}
       </div>
       {characterList.length > 0 && characterList.map((character, index) => (
         <Character
