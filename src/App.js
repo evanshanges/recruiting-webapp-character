@@ -40,6 +40,8 @@ function App() {
     updateCharacterList(draft => {
       draft.push(newCharacter)
     });
+
+    alert('New Character Created! Scroll down to see!')
   }
 
   /**
