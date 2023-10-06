@@ -53,5 +53,7 @@ export const SKILL_LIST = [
     { name: 'Sleight of Hand', attributeModifier: 'Dexterity' },
     { name: 'Stealth', attributeModifier: 'Dexterity' },
     { name: 'Survival', attributeModifier: 'Wisdom' },
-
 ]
+
+export const API_URL = 
+    'https://recruiting.verylongdomaintotestwith.ca/api/{evanshanges}/character'
